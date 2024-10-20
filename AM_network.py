@@ -104,3 +104,19 @@ class AM_network(nn.Module):
         nn.ReLU(inplace=True)#,
     )
     return module
+
+
+# Main function to run the model
+if __name__ == "__main__":
+    # Instantiate the Encoder model (assuming Encoder_model provides this)
+    encoder = Encoder_model()  # Modify this according to your Encoder_model implementation
+
+    # Initialize the AM_network with the encoder
+    model = AM_network(encoder)
+
+    # Example input tensor
+    sample_input = torch.randn(1, 3, 224, 224)
+
+    # Forward pass through the model
+    output = model(sample_input)
+    print("Output shape:", output.shape)
