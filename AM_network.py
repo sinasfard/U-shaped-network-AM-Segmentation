@@ -1,7 +1,9 @@
 import torch
 import torch as nn
 import Encoder_model
-from Path_Connection import 
+from Path_Connection import atrous_block
+
+
 class AM_network(nn.Module):
   def __init__(self,net, init_features=32):
     super(AM_network,self).__init__()
