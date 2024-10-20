@@ -1,5 +1,6 @@
-############# transpose Block #################
+from torch.nn import functional as F1
 
+############# transpose Block #################
 class transpose_attention(nn.Module):
   def __init__(self, in_channels, out_channels, group=1):
     super(transpose_attention,self).__init__()
