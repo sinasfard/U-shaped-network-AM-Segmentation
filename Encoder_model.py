@@ -1,6 +1,7 @@
 import torch
 from torch import nn
-
+from Attention_blocks import SelfAttentionLayer, selfatt_divide4, selfatt_divide2
+from Expanding_Convolution import s0, s1, s2, s3, s4
 
 class Encoder_model(nn.Module):
   def __init__(self):
