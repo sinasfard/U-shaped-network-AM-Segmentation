@@ -1,3 +1,5 @@
+import torch
+from torch import nn
 ############################## Attention block ###################
 class SelfAttentionLayer(nn.Module):
   def __init__(self, embed_dim, num_heads):
