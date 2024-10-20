@@ -1,1 +1,1 @@
-# U-shaped-network-for-AM-Segmentation
+# U-shaped-network-for- Anterior Mediastinum (AM)-Segmentation
