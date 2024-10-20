@@ -1,3 +1,6 @@
+import torch
+import torch as nn
+
 class atrous_block(nn.Module):
   def __init__(self, input_channels, output_channels, kernel_size, padding, stride, group, dilation=1):
     super(atrous_block, self).__init__()
