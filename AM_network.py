@@ -2,7 +2,7 @@ import torch
 import torch as nn
 import Encoder_model
 from Path_Connection import atrous_block
-from Transpose_Attention_Block import 
+from Transpose_Attention_Block import transpose_attention
 
 
 class AM_network(nn.Module):
