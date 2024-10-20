@@ -1,3 +1,5 @@
+import torch
+import torch as nn
 from torch.nn import functional as F1
 
 ############# transpose Block #################
