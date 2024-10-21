@@ -25,30 +25,23 @@ transform_test = v2.Compose([
 
 torch.manual_seed(42)
 
-dataset_root = r"C:\AM-Project\Data4\Data"
+dataset_root = r"C:\AM-Project\Data3\Data"
 
-full_dataset = CustomDataset(root=dataset_root)
+train_dataset = CustomDataset(root=dataset_root, transforms=transform_train)
 
-# Define dataset sizes
-train_ratio, val_ratio, test_ratio = 0.75, 0.20, 0.05
-dataset_size = len(full_dataset)
+train_ratio = 0.75
+val_ratio = 0.20
+test_ratio = 0.05
+
+dataset_size = len(train_dataset)
 train_size = int(train_ratio * dataset_size)
 val_size = int(val_ratio * dataset_size)
 test_size = dataset_size - train_size - val_size
 
-# Split the dataset
-train_dataset, val_dataset, test_dataset = random_split(
-    full_dataset, [train_size, val_size, test_size]
-)
 
-
-train_dataset.dataset = CustomDataset(root=dataset_root, transforms=transform_train)
-val_dataset.dataset = CustomDataset(root=dataset_root, transforms=transform_test)
+train_dataset, val_dataset, test_dataset = random_split(train_dataset, [train_size, val_size, test_size])
 test_dataset.dataset = CustomDataset(root=dataset_root, transforms=transform_test)
 
-
-
-# Define DataLoaders
 your_batch_size = 32
 your_num_workers = 0
 
@@ -57,7 +50,6 @@ val_loader = DataLoader(val_dataset, batch_size=your_batch_size, shuffle=False, 
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=your_num_workers)
 
 #### train_one_epoch
-
 def train_one_epoch(model, train_loader, loss_fn, optimizer, metric, epoch=None):
   model.train()
   loss_train = MeanMetric()
@@ -66,12 +58,12 @@ def train_one_epoch(model, train_loader, loss_fn, optimizer, metric, epoch=None)
   with tqdm.tqdm(train_loader, unit='batch') as tepoch:
     for inputs, targets in tepoch:
       if epoch:
-        tepoch.set_description(f'Epoch {epoch}')
+        tepoch.set_description(f'Epoch {epoch}')      
       inputs = inputs.to(device)
       targets = targets.to(device)
       targets = targets.type(torch.uint8)
       outputs= model(inputs)
-      loss = loss_fn(outputs, targets) 
+      loss = loss_fn(outputs, targets)
       loss.backward()
       optimizer.step()
       optimizer.zero_grad()
@@ -93,6 +85,8 @@ def evaluate(model, test_loader, loss_fn, metric):
       targets = targets.type(torch.uint8)
       outputs = model(inputs)
       loss = loss_fn(outputs, targets)
+      conv = cfs(outputs, targets)#.type(torch.uint8))
+      miou,mdice,Acc,Se,Sp,IU,f1 = calculate_Accuracy(conv.cpu())
       loss_eval.update(loss.item(), weight=len(targets))
       metric(outputs, targets)
-  return loss_eval.compute().item(), metric.compute().item()
+  return loss_eval.compute().item(), metric.compute().item(), miou, mdice
