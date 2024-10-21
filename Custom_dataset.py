@@ -2,25 +2,6 @@ from torch.utils.data import Dataset, DataLoader, random_split
 # import torchvision.transforms.v2 as v2
 # import torchvision.transforms.v2.functional as tv_tensors
 
-# Define transformations
-transform_train = v2.Compose([
-    v2.CenterCrop((300, 380)),
-    v2.Resize(size=(224, 224), antialias=True),
-    v2.RandomPhotometricDistort(p=0.5),
-    v2.RandomHorizontalFlip(p=0.5),
-    v2.Lambda(lambda x: (x - x.min()) / (x.max() - x.min())),
-    v2.Normalize(mean=(0.5,), std=(0.5,)),
-    v2.Lambda(lambda x: x.repeat(3, 1, 1)),
-])
-
-transform_test = v2.Compose([
-    v2.CenterCrop((300, 380)),
-    v2.Resize(size=(224, 224), antialias=True),
-    v2.Lambda(lambda x: (x - x.min()) / (x.max() - x.min())),
-    v2.Normalize(mean=(0.5,), std=(0.5,)),
-    v2.Lambda(lambda x: x.repeat(3, 1, 1)),
-])
-
 class CustomDataset(Dataset):
     def __init__(self, root, transforms=None):
         self.root = root
