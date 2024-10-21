@@ -1,4 +1,4 @@
-from torchmetrics import Dice, Precision, Recall, Accuracy, F1Score, ConfusionMatrix
+from torchmetrics import ConfusionMatrix
 
 cfs = ConfusionMatrix(task='BINARY').to(device)
 def calculate_Accuracy(confusion):
