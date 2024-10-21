@@ -1,5 +1,28 @@
+from Metrics import calculate_Accuracy
+
+
+# Data Augmentation
+transform_train = v2.Compose([
+    v2.CenterCrop((300,380)),
+    v2.Resize(size=(224,224), antialias=True),
+    v2.RandomPhotometricDistort(p=0.5),
+    v2.RandomHorizontalFlip(p=0.5),
+    v2.Lambda(lambda x: (x - x.min()) / (x.max() - x.min())),
+    v2.Normalize(mean=(0.5,), std=(0.5,)),
+    v2.Lambda(lambda x: x.repeat(3, 1, 1)),
+    ])
+
+transform_test = v2.Compose([
+    v2.CenterCrop((300,380)),
+    v2.Resize(size=(224,224), antialias=True),
+    v2.Lambda(lambda x: (x - x.min()) / (x.max() - x.min())),
+    v2.Normalize(mean=(0.5,), std=(0.5,)),
+    v2.Lambda(lambda x: x.repeat(3, 1, 1)),
+    ])
 
 # Set seed for reproducibility
+
+
 torch.manual_seed(42)
 
 dataset_root = r"C:\AM-Project\Data4\Data"
