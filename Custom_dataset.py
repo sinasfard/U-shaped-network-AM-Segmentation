@@ -1,6 +1,8 @@
 from torch.utils.data import Dataset, DataLoader, random_split
 # import torchvision.transforms.v2 as v2
-# import torchvision.transforms.v2.functional as tv_tensors
+from torchvision import tv_tensors
+import os
+from PIL import Image
 
 class CustomDataset(Dataset):
     def __init__(self, root, transforms=None):
@@ -21,7 +23,7 @@ class CustomDataset(Dataset):
         if self.transforms:
             img, masks = self.transforms(img, masks)
         image_name = self.imgs[idx]
-        return img, masks, image_name
+        return img, masks
 
     def __len__(self):
         return len(self.imgs)
