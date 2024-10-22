@@ -11,7 +11,7 @@ from torchvision import transforms as v2
 from sklearn.model_selection import KFold
 import tqdm
 from torchmetrics import ConfusionMatrix
-from CustomDataset import CustomDataset
+from Custom_dataset import CustomDataset
 
 # Argument Parser Setup
 parser = argparse.ArgumentParser()
