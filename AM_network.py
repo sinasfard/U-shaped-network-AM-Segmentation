@@ -1,6 +1,6 @@
 import torch
-import torch as nn
-import Encoder_model
+from torch import nn
+from Encoder_model import Encoder_model
 from Path_Connection import atrous_block
 from Transpose_Attention_Block import transpose_attention
 
