@@ -12,6 +12,7 @@ class s0(nn.Module):
     self.kernel_3 = nn.Conv2d(1, 1, 1)
     self.cnn = nn.Conv2d(3, 64, 3, padding=1)
     self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    self.rlu = nn.ReLU(inplace = True)
 
   def forward(self, x):
     split_tensors = torch.chunk(x, 3, dim=1)
@@ -21,7 +22,7 @@ class s0(nn.Module):
     # k4 = self.kernel_4(split_tensors[3])
     out = torch.cat((k1,k2,k3), dim =1)
     out = self.Maxpool(self.cnn(out))
-    out = F1.relu(out)
+    out = self.rlu(out)
 
     return out
 
@@ -33,6 +34,7 @@ class s1(nn.Module):
     self.kernel_2 = nn.Conv2d(32, 32, 1)
     self.cnn = nn.Conv2d(64, 64, 3, padding=1)
     self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    self.rlu = nn.ReLU(inplace = True)
 
   def forward(self, x):
     split_tensors = torch.chunk(x, 2, dim=1)
@@ -40,7 +42,7 @@ class s1(nn.Module):
     k2 = self.kernel_2(split_tensors[1])
     out = torch.cat((k1,k2), dim =1)
     out = self.Maxpool(self.cnn(out))
-    out = F1.relu(out)
+    out = self.rlu(out)
     return out
 
 class s2(nn.Module):
@@ -50,6 +52,7 @@ class s2(nn.Module):
     self.kernel_2 = nn.Conv2d(32, 32, 1)
     self.cnn = nn.Conv2d(64, 128, 3, padding=1)
     self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    self.rlu = nn.ReLU(inplace = True)
 
   def forward(self, x):
     split_tensors = torch.chunk(x, 2, dim=1)
@@ -57,7 +60,7 @@ class s2(nn.Module):
     k2 = self.kernel_2(split_tensors[1])
     out = torch.cat((k1,k2), dim =1)
     out = self.Maxpool(self.cnn(out))
-    out = F1.relu(out)
+    out = self.rlu(out)
     return out
 
 
@@ -70,6 +73,7 @@ class s3(nn.Module):
     self.kernel_4 = nn.Conv2d(32, 32, 1)
     self.cnn = nn.Conv2d(128, 256, 3, padding=1)
     self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    self.rlu = nn.ReLU(inplace = True)
 
   def forward(self, x):
     split_tensors = torch.chunk(x, 4, dim=1)
@@ -79,7 +83,7 @@ class s3(nn.Module):
     k4 = self.kernel_4(split_tensors[3])
     out = torch.cat((k1,k2,k3,k4), dim =1)
     out = self.Maxpool(self.cnn(out))
-    out = F1.relu(out)
+    out = self.rlu(out)
     return out
 
 class s4(nn.Module):
@@ -89,6 +93,7 @@ class s4(nn.Module):
     self.kernel_2 = nn.Conv2d(128, 128, 1)
     self.cnn = nn.Conv2d(256, 512, 3, padding=1)
     self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    self.rlu = nn.ReLU(inplace = True)
 
   def forward(self, x):
     split_tensors = torch.chunk(x, 2, dim=1)
@@ -100,6 +105,6 @@ class s4(nn.Module):
     out = torch.cat((k1,k2), dim =1)
 
     out = self.Maxpool(self.cnn(out))
-    out = F1.relu(out)
+    out = self.rlu(out)
 
     return out
