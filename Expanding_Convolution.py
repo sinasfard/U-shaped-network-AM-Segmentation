@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+from torch.nn import functional as F1
 ########################## Expanding Conv
 
 class s0(nn.Module):
@@ -20,8 +20,8 @@ class s0(nn.Module):
     k3 = self.kernel_3(split_tensors[2])
     # k4 = self.kernel_4(split_tensors[3])
     out = torch.cat((k1,k2,k3), dim =1)
-    max = self.Maxpool(self.cnn(out))
-    out = F1.relu(max)
+    out = self.Maxpool(self.cnn(out))
+    out = F1.relu(out)
 
     return out
 
@@ -39,8 +39,8 @@ class s1(nn.Module):
     k1 = self.kernel_1(split_tensors[0])
     k2 = self.kernel_2(split_tensors[1])
     out = torch.cat((k1,k2), dim =1)
-    max = self.Maxpool(self.cnn(out))
-    out = F1.relu(max)
+    out = self.Maxpool(self.cnn(out))
+    out = F1.relu(out)
     return out
 
 class s2(nn.Module):
@@ -56,8 +56,8 @@ class s2(nn.Module):
     k1 = self.kernel_1(split_tensors[0])
     k2 = self.kernel_2(split_tensors[1])
     out = torch.cat((k1,k2), dim =1)
-    max = self.Maxpool(self.cnn(out))
-    out = F1.relu(max)
+    out = self.Maxpool(self.cnn(out))
+    out = F1.relu(out)
     return out
 
 
@@ -78,8 +78,8 @@ class s3(nn.Module):
     k3 = self.kernel_3(split_tensors[2])
     k4 = self.kernel_4(split_tensors[3])
     out = torch.cat((k1,k2,k3,k4), dim =1)
-    max = self.Maxpool(self.cnn(out))
-    out = F1.relu(max)
+    out = self.Maxpool(self.cnn(out))
+    out = F1.relu(out)
     return out
 
 class s4(nn.Module):
@@ -99,7 +99,7 @@ class s4(nn.Module):
     # k4 = self.kernel_4(split_tensors[3])
     out = torch.cat((k1,k2), dim =1)
 
-    max = self.Maxpool(self.cnn(out))
-    out = F1.relu(max)
+    out = self.Maxpool(self.cnn(out))
+    out = F1.relu(out)
 
     return out
