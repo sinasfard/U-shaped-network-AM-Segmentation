@@ -1,5 +1,6 @@
 import torch
-import torch as nn
+from torch import nn
+
 
 class atrous_block(nn.Module):
   def __init__(self, input_channels, output_channels, kernel_size, padding, stride, group, dilation=1):
