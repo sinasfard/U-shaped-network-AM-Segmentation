@@ -5,6 +5,7 @@ pandas
 sklearn
 torch == 2.1.2
 torchvision == 0.16.2
-torchmetrics == 1.2.1
+torchaudio
+torchmetrics
 tqdm == 4.65.0
 segmentation_models_pytorch == 0.3.3
