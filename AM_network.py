@@ -1,16 +1,17 @@
 import torch
 from torch import nn
+import torchvision
 from Encoder_model import Encoder_model
 from Path_Connection import atrous_block
 from Transpose_Attention_Block import transpose_attention
 
 
 class AM_network(nn.Module):
-  def __init__(self,net, init_features=32):
+  def __init__(self, init_features=32):
     super(AM_network,self).__init__()
     #Encoder
 
-    self.backbone = net
+    self.backbone = Encoder_model()
     self.backbone = torchvision.models._utils.IntermediateLayerGetter(self.backbone,
                                                     {
                                                     'layer0': 'out0',
@@ -104,19 +105,3 @@ class AM_network(nn.Module):
         nn.ReLU(inplace=True)#,
     )
     return module
-
-
-# Main function to run the model
-if __name__ == "__main__":
-    # Instantiate the Encoder model (assuming Encoder_model provides this)
-    encoder = Encoder_model()  # Modify this according to your Encoder_model implementation
-
-    # Initialize the AM_network with the encoder
-    model = AM_network(encoder)
-
-    # Example input tensor
-    sample_input = torch.randn(1, 3, 224, 224)
-
-    # Forward pass through the model
-    output = model(sample_input)
-    print("Output shape:", output.shape)
