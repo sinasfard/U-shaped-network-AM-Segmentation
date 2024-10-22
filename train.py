@@ -1,7 +1,25 @@
 from Metrics import calculate_Accuracy
 from k_fold import train_kfold
-
+import argparse
 # Data Augmentation
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--num epochs", type=int, default=100, help="number of epochs of training")
+parser.add_argument("kfold", type=int, default=4, help="number of kfold")
+# parser.add_argument("--n_save_iter", type=int, default=1000, help="save the model every time")
+# parser.add_argument("--n_val_iter", type=int, default=1000, help="val the model every time")
+# parser.add_argument("--data_root_path", type=str,
+#                     default='/raid/hra/dataset/BreastCancerMRI_350/CropZero_down0.5XY/Norm/', help='dataset root path')
+# parser.add_argument("--img1_prefix", type=str, default='DCE-C1', help="img prefix")
+# parser.add_argument("--img2_prefix", type=str, default='DCE-C0', help="img prefix")
+# parser.add_argument("--label_prefix", type=str, default='TumorMask', help="label prefix")
+# parser.add_argument("--datalist_json_path", type=str, default='../data/datalist_Siemens.json', help="datalist path")
+# parser.add_argument("--model_dir_root_path", type=str, default='../model/', help="root path to save the model")
+# parser.add_argument("--note", type=str, default="", help="note")
+arg = parser.parse_args()
+
+
 transform_train = v2.Compose([
     v2.CenterCrop((300,380)),
     v2.Resize(size=(224,224), antialias=True),
@@ -90,3 +108,12 @@ def evaluate(model, test_loader, loss_fn, metric):
       loss_eval.update(loss.item(), weight=len(targets))
       metric(outputs, targets)
   return loss_eval.compute().item(), metric.compute().item(), miou, mdice
+
+
+def train(num_epochs, kfold):
+    return train_kfold (num_epochs, kfold)
+
+
+if __name__ == "__main__":
+
+    train(**vars(arg))
