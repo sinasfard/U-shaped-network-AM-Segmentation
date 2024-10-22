@@ -37,7 +37,7 @@ def train(root, num_epochs, k_fold):
     transform_train = v2.Compose([
         v2.CenterCrop((300, 380)),
         v2.Resize(size=(224, 224), antialias=True),
-        v2.RandomPhotometricDistort(p=0.5),
+        # v2.RandomPhotometricDistort(p=0.5),
         v2.RandomHorizontalFlip(p=0.5),
         v2.Lambda(lambda x: (x - x.min()) / (x.max() - x.min())),
         v2.Normalize(mean=(0.5,), std=(0.5,)),
