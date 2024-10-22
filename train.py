@@ -1,5 +1,5 @@
 from Metrics import calculate_Accuracy
-from k_fold import concat_data
+from k_fold import train_kfold
 
 # Data Augmentation
 transform_train = v2.Compose([
