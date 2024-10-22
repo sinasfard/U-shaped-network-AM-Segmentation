@@ -1,5 +1,6 @@
 import torch
-import torch as nn
+from torch import nn
+
 ########################## Expanding Conv
 
 class s0(nn.Module):
