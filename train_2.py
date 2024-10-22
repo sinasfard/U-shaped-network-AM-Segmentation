@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs of training")
 parser.add_argument("--k_fold", type=int, default=4, help="Number of k-folds for cross-validation")
-parser.add_argument("--data_root_path", type=str, default='/content/data', help="Dataset root path")
+parser.add_argument("--root", type=str, default='/content/data', help="Dataset root path")
 
 arg = parser.parse_args()
 # print('hi')
