@@ -1,6 +1,4 @@
 import argparse
-# import Metrics
-# from k_fold import *
 import numpy as np
 from AM_network import AM_network
 import torch
@@ -53,19 +51,17 @@ from torchmetrics import Dice, Precision, Recall, Accuracy, F1Score, ConfusionMa
 # Argument Parser Setup
 parser = argparse.ArgumentParser()
 
+    
 parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs of training")
 parser.add_argument("--k_fold", type=int, default=4, help="Number of k-folds for cross-validation")
-parser.add_argument("--lr", type=int, default=0.00003, help="learning rate")
-parser.add_argument("--lr_scheduler_milestones", type=int, default=[50], help="lr-scheduler-milestones")
-parser.add_argument("--lr_scheduler_gamma", type=int, default=0.1, help="lr scheduler gamma")
+parser.add_argument("--lr", type=float, default=0.00003, help="learning rate")
+# parser.add_argument("--lr_scheduler_milestones", type=int, default=[50], help="lr-scheduler-milestones")
+# parser.add_argument("--lr_scheduler_milestones", type=list,  default=50, help="lr-scheduler-milestones")
+parser.add_argument("--lr_scheduler_gamma", type=float, default=0.1, help="lr scheduler gamma")
 parser.add_argument("--root", type=str, default='/content/data', help="Dataset root path")
 
 arg = parser.parse_args()
-# print('hi')
-# print(f"Num Epochs: {arg.num_epochs}, KFold: {arg.kfold}, Data Root Path: {arg.data_root_path}")
 
-# Device setup
-# device = 'cuda' if torch.cuda.is_available() else 'cpu'
 loss_train_hist = []
 loss_valid_hist = []
 
@@ -75,13 +71,8 @@ metric_valid_hist = []
 
 best_loss_valid = torch.inf
 epoch_counter = 0
-# Optimizer configuration (assuming model will be passed later)
-# lr = 0.00003
 wd = 1e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-# loss_fn = smp.losses.DiceLoss(mode='multilabel')
-# # loss_fn = FocalLoss().to(device)
-# metric = Dice().to(device)
 cfs = ConfusionMatrix(task='BINARY').to(device)
 
 def train_one_epoch(model, train_loader, loss_fn, optimizer, metric, epoch=None):
@@ -107,6 +98,7 @@ def train_one_epoch(model, train_loader, loss_fn, optimizer, metric, epoch=None)
                          metric=metric.compute().item())
   return model, loss_train.compute().item(), metric.compute().item()
 
+
 def evaluate(model, test_loader, loss_fn, metric):
   model.eval()
   loss_eval = MeanMetric()
@@ -123,7 +115,6 @@ def evaluate(model, test_loader, loss_fn, metric):
       loss_eval.update(loss.item(), weight=len(targets))
       metric(outputs, targets)
   return loss_eval.compute().item(), metric.compute().item(), miou, mdice
-
 
 
 def calculate_Accuracy(confusion):
@@ -146,7 +137,7 @@ def calculate_Accuracy(confusion):
     return  IU[1],dice[1],Acc,Se,Sp,IU,f1
 
 # Define the training function
-def train(root, num_epochs, k_fold):
+def train(root, num_epochs, k_fold, lr, lr_scheduler_gamma):
     
     # Data augmentation for training and testing
     transform_train = v2.Compose([
@@ -193,7 +184,7 @@ def train(root, num_epochs, k_fold):
     # Initialize model, optimizer, and loss function
     model = AM_network().to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
-    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=lr_scheduler_milestones, gamma=lr_scheduler_gamma)
+    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[50], gamma=lr_scheduler_gamma)
     loss_fn = smp.losses.DiceLoss(mode='multilabel')
     metric = Dice().to(device)
 
@@ -204,6 +195,7 @@ def train(root, num_epochs, k_fold):
         print('Starting K-Fold Cross-Validation')
         for fold, (train_ids, test_ids) in enumerate(kfold1.split(train_dataset)):
             print(f'Fold {fold + 1}/{k_fold}')
+            print ('-------------')
 
             train_subsampler = torch.utils.data.SubsetRandomSampler(train_ids)
             test_subsampler = torch.utils.data.SubsetRandomSampler(test_ids)
@@ -237,13 +229,17 @@ def train(root, num_epochs, k_fold):
                     torch.save(model.state_dict(), f'model_fold_{fold}.pt')
                     best_loss = loss_val
                     print(f'Model for fold {fold + 1} saved!')
-
+                
                 print(f'Epoch {epoch + 1}: Train Loss={loss_train:.4f}, Val Loss={loss_val:.4f}')
+                print(f'Epoch {epoch + 1}: Iou = {miou:.4f}, Dice = {mdice:.4f}')
+                print()
+                
 
             lr_scheduler.step()
 
     # Train with K-Fold
     train_kfold(num_epochs, k_fold, model)
+    
 
 # Define training helper functions
 
