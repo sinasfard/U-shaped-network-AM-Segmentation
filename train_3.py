@@ -55,6 +55,9 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs of training")
 parser.add_argument("--k_fold", type=int, default=4, help="Number of k-folds for cross-validation")
+parser.add_argument("--lr", type=int, default=0.00003, help="learning rate")
+parser.add_argument("--lr_scheduler_milestones", type=int, default=[50], help="lr-scheduler-milestones")
+parser.add_argument("--lr_scheduler_gamma", type=int, default=0.1, help="lr scheduler gamma")
 parser.add_argument("--root", type=str, default='/content/data', help="Dataset root path")
 
 arg = parser.parse_args()
@@ -73,7 +76,7 @@ metric_valid_hist = []
 best_loss_valid = torch.inf
 epoch_counter = 0
 # Optimizer configuration (assuming model will be passed later)
-lr = 0.00003
+# lr = 0.00003
 wd = 1e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # loss_fn = smp.losses.DiceLoss(mode='multilabel')
@@ -190,7 +193,7 @@ def train(root, num_epochs, k_fold):
     # Initialize model, optimizer, and loss function
     model = AM_network().to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
-    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[350], gamma=0.1)
+    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=lr_scheduler_milestones, gamma=lr_scheduler_gamma)
     loss_fn = smp.losses.DiceLoss(mode='multilabel')
     metric = Dice().to(device)
 
