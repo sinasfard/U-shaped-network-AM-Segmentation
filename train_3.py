@@ -1,18 +1,8 @@
 import argparse
 import numpy as np
 from AM_network import AM_network
-import torch
-import torch.optim as optim
-import torch.nn as nn
-from torch.utils.data import DataLoader, random_split, ConcatDataset
-from torchvision import transforms as v2
 from sklearn.model_selection import KFold
-import tqdm
-from torchmetrics import ConfusionMatrix
 from Custom_dataset import CustomDataset
-
-
-
 
 import os
 import sys
@@ -22,7 +12,6 @@ import tqdm
 from glob import glob
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -42,7 +31,6 @@ from torchvision.transforms import v2
 from torchvision import tv_tensors
 
 import segmentation_models_pytorch as smp
-
 import torchmetrics as tm
 from torchmetrics.aggregation import MeanMetric
 from torchmetrics import Dice, Precision, Recall, Accuracy, F1Score, ConfusionMatrix
